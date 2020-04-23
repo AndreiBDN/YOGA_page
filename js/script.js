@@ -98,22 +98,29 @@ window.addEventListener('DOMContentLoaded', function () {
     let more = document.querySelector('.more'),
         modal = document.querySelector('.overlay'),
         popUp = document.querySelector('.popup'),
-        closeModal = document.querySelector('.popup-close');
+        closeModal = document.querySelector('.popup-close'),
+        info = document.querySelector('.info');
 
-    more.addEventListener('click', function () {
+    info.addEventListener('click', function (event) {
+        let target = event.target;
+        if (target.classList.contains('description-btn')) {
+            showModal();
+        }
+    });
+
+    function showModal() {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
-    });
+    }
 
-    closeModal.addEventListener('click', () => {
+    function closeModalWindow() {
         modal.style.display = 'none';
         document.body.style.overflow = '';
-    });
+    }
 
-    modal.addEventListener('click', function (event) {
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-    });
+    closeModal.addEventListener('click', closeModalWindow);
+
+    modal.addEventListener('click', closeModalWindow);
     popUp.addEventListener('click', event => {
         event.stopPropagation();
     });
