@@ -35,61 +35,87 @@ window.addEventListener('DOMContentLoaded', function () {
         }
 
     });
-});
 
-// TIMER
-let deadLine = '2020-04-23';
+    // TIMER
+    let deadLine = '2020-04-23';
 
-function getTime(endTime) {
-    let t = Date.parse(endTime) - Date.parse(new Date()),
-        days = Math.floor((t / (1000 * 60 * 60)) / 24),
-        hours = Math.floor((t / (1000 * 60 * 60)) % 24),
-        minutes = Math.floor((t / 1000 / 60 % 60)),
-        seconds = Math.floor((t / 1000 % 60));
+    function getTime(endTime) {
+        let t = Date.parse(endTime) - Date.parse(new Date()),
+            days = Math.floor((t / (1000 * 60 * 60)) / 24),
+            hours = Math.floor((t / (1000 * 60 * 60)) % 24),
+            minutes = Math.floor((t / 1000 / 60 % 60)),
+            seconds = Math.floor((t / 1000 % 60));
 
-    return {
-        'totalTime': t,
-        'days': days,
-        'hours': hours,
-        'minutes': minutes,
-        'seconds': seconds
-    };
-}
+        return {
+            'totalTime': t,
+            'days': days,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
+        };
+    }
 
-function setTimer(id, endTime) {
-    let timer = document.getElementById(id),
-        days = timer.querySelector('.days'),
-        hours = timer.querySelector('.hours'),
-        minutes = timer.querySelector('.minutes'),
-        seconds = timer.querySelector('.seconds'),
-        timeInterval = setInterval(updateTimer, 1000);
+    function setTimer(id, endTime) {
+        let timer = document.getElementById(id),
+            days = timer.querySelector('.days'),
+            hours = timer.querySelector('.hours'),
+            minutes = timer.querySelector('.minutes'),
+            seconds = timer.querySelector('.seconds'),
+            timeInterval = setInterval(updateTimer, 1000);
 
-    function updateTimer() {
-        let t = getTime(endTime);
+        function updateTimer() {
+            let t = getTime(endTime);
 
-        function addNull(num) {
-            if (num <= 9) {
-                return '0' + num;
-            } else {
-                return num;
+            function addNull(num) {
+                if (num <= 9) {
+                    return '0' + num;
+                } else {
+                    return num;
+                }
+            }
+            days.textContent = addNull(t.days);
+
+            hours.textContent = addNull(t.hours);
+
+            minutes.textContent = addNull(t.minutes);
+
+            seconds.textContent = addNull(t.seconds);
+
+            if (t.totalTime <= 0) {
+                clearInterval(timeInterval);
+
+                hours.textContent = '00';
+                minutes.textContent = '00';
+                seconds.textContent = '00';
             }
         }
-        days.textContent = addNull(t.days);
-
-        hours.textContent = addNull(t.hours);
-
-        minutes.textContent = addNull(t.minutes);
-
-        seconds.textContent = addNull(t.seconds);
-
-        if (t.totalTime <= 0) {
-            clearInterval(timeInterval);
-
-            hours.textContent = '00';
-            minutes.textContent = '00';
-            seconds.textContent = '00';
-        }
     }
-}
 
-setTimer('timer', deadLine);
+    setTimer('timer', deadLine);
+
+    // MODAL
+
+    let more = document.querySelector('.more'),
+        modal = document.querySelector('.overlay'),
+        popUp = document.querySelector('.popup'),
+        closeModal = document.querySelector('.popup-close');
+
+    more.addEventListener('click', function () {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    });
+
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    });
+
+    modal.addEventListener('click', function (event) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    });
+    popUp.addEventListener('click', event => {
+        event.stopPropagation();
+    });
+
+});
